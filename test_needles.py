@@ -115,8 +115,10 @@ def build_haystack(rng, depth, n_needles, approx_tokens, cpt=4.0):
     n_paras = max(len(needle_lines) + 2,
                   int(filler_chars // para_chars * 0.97))
 
-    embed_at = sorted(rng.uniform(max(0.0, depth - 0.08), min(1.0, depth + 0.01))
-                      for _ in range(n_needles))
+    # EVEN distribution across the whole haystack (user directive 2026-09-13):
+    # one needle per stratum, jittered inside its stratum (pinned by caller rng).
+    embed_at = sorted((i + rng.random()) / n_needles for i in range(n_needles))
+    del depth  # kept in CLI for compat; distribution is now full-context even
     paras = []
     ni = 0
     for p in range(n_paras):
@@ -159,8 +161,9 @@ def main():
     p.add_argument("--depth", type=float, default=0.75,
                    help="fraction of context where needles sit (default 0.75)")
     p.add_argument("--seed", type=int, default=1234, help="pinned RNG seed")
-    p.add_argument("--turn-tokens", type=int, default=16384,
-                   help="max_tokens per continuation turn (default 16384)")
+    p.add_argument("--turn-tokens", type=int, default=None,
+                   help="max_tokens per continuation turn (default: 1/4 of "
+                        "full served context, per the qualification bar)")
     p.add_argument("--max-turns", type=int, default=10,
                    help="hard cap on continuation turns (default 10)")
     p.add_argument("--max-stall-turns", type=int, default=3,
@@ -172,6 +175,8 @@ def main():
     args.model = resolve_model(args.base_url, args.api_key, args.model)
 
     ctx = args.ctx or 32768
+    # output budget per turn: default 1/4 of FULL served context (user bar)
+    turn_tokens = args.turn_tokens or (ctx // 4)
     rng = random.Random(args.seed)
     try:
         cpt = calibrate_ratio(args.base_url, args.api_key, args.model,
@@ -202,7 +207,7 @@ def main():
         # fit check: prompt + output budget must fit the window
         approx_prompt_tokens = (sum(len(str(m["content"])) for m in messages)
                                 + sum(len(s) for s in full_answer)) / cpt
-        cap = min(args.turn_tokens, int(ctx - approx_prompt_tokens - 512))
+        cap = min(turn_tokens, int(ctx - approx_prompt_tokens - 512))
         if cap < 2048:
             print(f"turn {turn}: no room left in ctx (prompt ~{int(approx_prompt_tokens)}, "
                   f"cap {cap}) — ending chain", flush=True)

@@ -1,3 +1,4 @@
 results/
 __pycache__/
-*.pyc
+queue_probe_*.py
+run_tests.sh
