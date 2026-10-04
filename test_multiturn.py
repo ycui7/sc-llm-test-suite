@@ -15,6 +15,19 @@ Usage: python3 test_multiturn.py [--base-url URL] [--model ID]
 import json
 import re
 
+def _num(text):
+    """Last number in text, normalizing unicode minus/plus so grader matches."""
+    t = text.replace("\u2212", "-").replace("\u2213", "+").replace(",", "")
+    nums = re.findall(r"-?\d+(?:\.\d+)?", t)
+    return float(nums[-1]) if nums else None
+
+def _nums(text):
+    """All numbers in text (unicode-normalized) — graders must not assume the
+    final number is the answer: chatty answers ("**25.0 °C** ... +5 °C offset")
+    end on an echo of an input value."""
+    t = text.replace("\u2212", "-").replace("\u2213", "+").replace(",", "")
+    return [float(x) for x in re.findall(r"-?\d+(?:\.\d+)?", t)]
+
 from qc_common import chat, last_answer, make_arg_parser, resolve_model, Result
 
 WEATHER = {  # baseline temps in C
@@ -86,8 +99,8 @@ def main():
         ans, nt, nl = run_loop(args, [{"role": "user", "content":
             "What is the temperature in Paris with a +5 C offset? "
             "Use get_weather and give the final number."}])
-        n = re.findall(r"-?\d+(?:\.\d+)?", ans)
-        r.add("C1-single-tool-offset", bool(n) and float(n[-1]) == 25,
+        ok = any(abs(x - 25.0) < 1e-6 for x in _nums(ans))
+        r.add("C1-single-tool-offset", ok,
               f"tools={nt} lm={nl} ans={ans[:100]!r}")
     except Exception as e:  # noqa: BLE001
         r.add("C1-single-tool-offset", False, repr(e)[:300])
@@ -109,7 +122,7 @@ def main():
                 good = "15" in ans and "23" in ans
                 why = f"want 15&23, got={ans[-200:]!r}" if not good else ""
             elif "new york" in ql:
-                good = re.search(r"(-5)(?!\d)", ans) is not None
+                good = re.search(r"(?:\u2212|-)5(?!\d)", ans) is not None
                 why = f"want -5, got={ans[-200:]!r}" if not good else ""
             else:
                 good = re.search(r"\b14\b", ans) is not None
@@ -129,8 +142,8 @@ def main():
             "What is the weather in New York minus the weather in London "
             "(temperature difference in C)? Use get_weather for each city and "
             "give the difference as a final number."}])
-        n = re.findall(r"-?\d+(?:\.\d+)?", ans)
-        r.add("C3-two-tool-compose", bool(n) and float(n[-1]) == -10,
+        n = _num(ans)
+        r.add("C3-two-tool-compose", n == -10,
               f"tools={nt} lm={nl} ans={ans[:100]!r}")
     except Exception as e:  # noqa: BLE001
         r.add("C3-two-tool-compose", False, repr(e)[:300])

@@ -113,7 +113,7 @@ def main():
 
     rows = None
     source = "fallback"
-    tmp_json = (args.save_result or "/tmp") + ".benchy.json"
+    tmp_json = os.path.join(os.path.dirname(args.save_result) if args.save_result else "/home/ycui/.hermes/cache/scratch", "benchy.tmp.json")
     if not args.fallback:
         try:
             data = run_benchy(args, tmp_json)
