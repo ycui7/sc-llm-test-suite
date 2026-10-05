@@ -2,3 +2,4 @@ results/
 __pycache__/
 queue_probe_*.py
 run_tests.sh
+corpus/

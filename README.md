@@ -23,7 +23,7 @@ Each routine is a standalone script. All share the same CLI:
 | 2 | `test_coherence.py` | deterministic temp-0 tasks: arithmetic, word problem, syllogism (no overreach), JSON copy, primes, instruction following, safety refusal, self-consistency x3, 150-word generation | all green |
 | 3 | `test_tool_leak.py` | plain question *with tools in schema* → prose, no tool-JSON/prompt-echo leak; required tool → well-formed call; tool result consumed | 3/3 |
 | 4 | `test_multiturn.py` | agentic loop: single-tool offset compose, 3-turn context persistence, two-tool arithmetic difference (deterministic fake backends) | 3/3 |
-| 5 | `test_needles.py` | random unique needles (unique word + random number, pinned seed) embedded at 3/4 of served context, exact retrieval | 64/64 (raise `--needles` to the 2048 gate when qualifying long-context) |
+| 5 | `test_needles.py` | needles (unique word + random number, pinned seed) UNIFORMLY embedded in a public-domain-novel story haystack (`corpus/`, see `fetch_corpus.sh`), distributed from the start up to min(2/3 ctx, 512K); output room reserved (loud abort if it cannot fit); ALL needles must return in ONE inference; ctx<=64K -> 1024 needles, else 2048 | 2048/2048 (1024/1024 at ctx<=64K) |
 | 6 | `test_speed.py` | pp2048 / tg512 @ concurrency 1,2,4 via llama-benchy (fallback: stdlib round-robin, directional only) | table recorded |
 
 `test_smoke.sh` is the minimal bash ping (endpoint + PONG) kept for quick checks.

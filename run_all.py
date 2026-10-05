@@ -6,7 +6,9 @@ Order follows the qualification gate:
   2 test_coherence  (deterministic quality, temp 0)
   3 test_tool_leak  (no tool JSON / prompt echo leak; tool round-trip)
   4 test_multiturn  (agentic continuity across turns)
-  5 test_needles    (retrieval at 3/4 of served context)
+  5 test_needles    (story-haystack needle retrieval, single inference;
+                    needles uniform to min(2/3 ctx, 512K); 1024 needles if
+                    ctx<=64K else 2048 — spec 2026-10-05)
   6 test_speed      (pp2048/tg512 @ conc 1,2,4 — run LAST, zero interference)
 
 Any FAIL = deployment NOT verified. Results JSONs land in --out-dir.
