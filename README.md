@@ -22,7 +22,7 @@ Each routine is a standalone script. All share the same CLI:
 | 1 | `test_endpoint.py` | `/models` up, model registered, minimal chat answers | 3/3 |
 | 2 | `test_coherence.py` | deterministic temp-0 tasks: arithmetic, word problem, syllogism (no overreach), JSON copy, primes, instruction following, safety refusal, self-consistency x3, 150-word generation | all green |
 | 3 | `test_tool_leak.py` | plain question *with tools in schema* → prose, no tool-JSON/prompt-echo leak; required tool → well-formed call; tool result consumed | 3/3 |
-| 4 | `test_multiturn.py` | agentic loop: single-tool offset compose, 3-turn context persistence, two-tool arithmetic difference (deterministic fake backends) | 3/3 |
+| 4 | `test_multiturn.py` | agentic loop: single-tool offset compose, 3-turn context persistence, two-tool arithmetic difference (deterministic fake backends), plus **C4: three tool-calling rounds in one conversation with `chat_template_kwargs {enable_thinking, preserve_thinking}` on and the thinking block replayed as `reasoning_content` on rounds 2 and 3** | 6/6 |
 | 5 | `test_needles.py` | needles (unique word + random number, pinned seed) UNIFORMLY embedded in a public-domain-novel story haystack (`corpus/`, see `fetch_corpus.sh`), distributed from the start up to min(2/3 ctx, 512K); output room reserved (loud abort if it cannot fit); ALL needles must return in ONE inference; ctx<=64K -> 1024 needles, else 2048 | 2048/2048 (1024/1024 at ctx<=64K) |
 | 6 | `test_speed.py` | pp2048 / tg512 @ concurrency 1,2,4 via llama-benchy (fallback: stdlib round-robin, directional only) | table recorded |
 
@@ -50,3 +50,9 @@ passes (`VERIFIED`) — any FAIL means the deployment is NOT verified.
   zero interference during speed runs (launch, wait for exit, then read).
 - Prefer going through LiteLLM for app-path traffic; benchmark the raw
   engine endpoint only when the raw numbers are what's under test.
+- `test_multiturn.py` C4 talks to the **engine directly**: `chat_template_kwargs`
+  (`enable_thinking`, `preserve_thinking`) are not forwarded by the gateway on
+  plain chat, so the preserve-thinking round trip can only be qualified on the
+  engine endpoint. Flags: `--no-preserve-thinking` (control run, thinking is not
+  replayed), `--allow-no-reasoning` (waive C4c for a non-thinking model),
+  `--think-kwargs '<json>'` (template-kwarg override).
