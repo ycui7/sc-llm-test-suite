@@ -106,8 +106,29 @@ def last_answer(content, reasoning):
 
 def final_number(text):
     """Last integer/float token in the answer (thinking models restate numbers;
-    the final one is the answer)."""
-    nums = re.findall(r"-?\d+(?:\.\d+)?", text.replace(",", ""))
+    the final one is the answer). If the text contains an '=', prefer the number
+    following the LAST '=' — an epilogue after the answer (e.g. "…a string of
+    eleven 1s followed by a 0") otherwise steals the last-position slot.
+
+    Markdown emphasis/code is stripped first: models write "= **391**" and
+    "= `391`", which a bare `=\\s*(-?\\d)` scan misses, leaving an earlier
+    "17 × 23 = 17 × (20 + 3)" as the last match. An explicit "final answer" /
+    "answer is" cue wins over both heuristics."""
+    import re as _re
+    t = _re.sub(r"[*_`$]", "", text.replace(",", ""))
+    cue = None
+    for cue in _re.finditer(
+            r"(?:final answer|answer is|result is)[^\d\-]{0,20}(-?\d+(?:\.\d+)?)",
+            t, _re.I):
+        pass
+    if cue:
+        return float(cue.group(1))
+    m = None
+    for m in _re.finditer(r"=\s*(-?\d+(?:\.\d+)?)", t):
+        pass
+    if m:
+        return float(m.group(1))
+    nums = _re.findall(r"-?\d+(?:\.\d+)?", t)
     return float(nums[-1]) if nums else None
 
 
