@@ -41,4 +41,14 @@ Followed ub-mode (Make it Work → Make it Right → Practice).
 
 ## End-to-end result
 
-(seen live in this session; appended after the probe exited)
+Live through Bifrost (sc-hub:4000), model gx10/qwen38fn-fp4-qad,
+--rounds 2 --seed 7 (JSON: scratch/table-align-e2e.json):
+
+- round 0: 6 cols, widths [31,7,15,48,10,14], 9 data rows, 0 duplicate
+  cells, MISALIGNED LINES 1 (idx [0] — the header row).
+- round 1: 6 cols, widths [20,7,13,27,8,26], 9 data rows, 0 duplicate
+  cells, MISALIGNED LINES 0.
+- REPORT: tables found 2/2 | misaligned lines 1 | misaligned rows 1.
+
+run_all.py integration (endpoint + table-alignment, rest skipped):
+verdict shows `table-alignment INFO`, model still VERIFIED, exit 0.
