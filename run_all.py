@@ -10,6 +10,9 @@ Order follows the qualification gate:
                     needles uniform to min(2/3 ctx, 512K); 1024 needles if
                     ctx<=64K else 2048 — spec 2026-10-05)
   6 test_speed      (pp2048/tg512 @ conc 1,2,4 — run LAST, zero interference)
+  7 test_table_alignment (INFORMATIONAL: ASCII-table alignment probe;
+                    reports the count of misaligned lines, no pass/fail bar,
+                    never affects the verdict)
 
 Any FAIL = deployment NOT verified. Results JSONs land in --out-dir.
 
@@ -29,9 +32,11 @@ STEPS = [
     ("coherence", "test_coherence.py", []),
     ("tool-leak", "test_tool_leak.py", []),
     ("multiturn", "test_multiturn.py", []),
-    ("needles", "test_needles.py", ["--ctx", "{ctx}"]),
+    ("needles", "test_needles.py", ["--ctx", "{ctx}", "--timeout", "1800"]),
     ("speed", "test_speed.py", []),
+    ("table-alignment", "test_table_alignment.py", ["--rounds", "1"]),
 ]
+INFORMATIONAL = {"table-alignment"}  # counted as INFO, never gates the verdict
 
 
 def main():
@@ -61,13 +66,16 @@ def main():
         print(f"\n===== {name} =====\n$ " + " ".join(cmd), flush=True)
         t0 = time.monotonic()
         rc = subprocess.call(cmd)
-        verdicts[name] = "PASS" if rc == 0 else "FAIL"
+        if name in INFORMATIONAL:
+            verdicts[name] = "INFO"
+        else:
+            verdicts[name] = "PASS" if rc == 0 else "FAIL"
         print(f"===== {name}: {verdicts[name]} ({time.monotonic()-t0:.0f}s)", flush=True)
 
     print("\n--- qualification verdict ---")
     for k, v in verdicts.items():
         print(f"  {k:12s} {v}")
-    ok = all(v == "PASS" for v in verdicts.values())
+    ok = all(v == "PASS" for k, v in verdicts.items() if v != "INFO")
     print(f"\n{'VERIFIED' if ok else 'NOT VERIFIED'} — {args.model}")
     with open(os.path.join(args.out_dir, "verdict.json"), "w") as f:
         json.dump({"model": args.model, "base_url": args.base_url,

@@ -25,6 +25,7 @@ Each routine is a standalone script. All share the same CLI:
 | 4 | `test_multiturn.py` | agentic loop: single-tool offset compose, 3-turn context persistence, two-tool arithmetic difference (deterministic fake backends), plus **C4: three tool-calling rounds in one conversation with `chat_template_kwargs {enable_thinking, preserve_thinking}` on and the thinking block replayed as `reasoning_content` on rounds 2 and 3** | 6/6 |
 | 5 | `test_needles.py` | needles (unique word + random number, pinned seed) UNIFORMLY embedded in a public-domain-novel story haystack (`corpus/`, see `fetch_corpus.sh`), distributed from the start up to min(2/3 ctx, 512K); output room reserved (loud abort if it cannot fit); ALL needles must return in ONE inference; ctx<=64K -> 1024 needles, else 2048 | 2048/2048 (1024/1024 at ctx<=64K) |
 | 6 | `test_speed.py` | pp2048 / tg512 @ concurrency 1,2,4 via llama-benchy (fallback: stdlib round-robin, directional only) | table recorded |
+| 7 | `test_table_alignment.py` | **INFORMATIONAL, no pass/fail**: model generates one ASCII table (unequal column widths, unique variable-length cell content); the probe counts table lines whose delimiter positions deviate from the majority pattern and reports the misaligned count (plus rows, columns, column widths, duplicate cells) | count reported, never gates |
 
 `test_smoke.sh` is the minimal bash ping (endpoint + PONG) kept for quick checks.
 
