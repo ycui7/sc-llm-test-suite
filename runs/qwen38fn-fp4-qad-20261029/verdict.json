@@ -1,0 +1,14 @@
+{
+  "model": "qwen38fn-fp4-qad",
+  "base_url": "http://127.0.0.1:8000/v1",
+  "verdicts": {
+    "endpoint": "PASS",
+    "coherence": "PASS",
+    "tool-leak": "PASS",
+    "multiturn": "FAIL",
+    "needles": "PASS",
+    "speed": "PASS",
+    "table-alignment": "INFO"
+  },
+  "verified": false
+}

@@ -1,0 +1,23 @@
+{
+  "suite": "needles",
+  "ok": true,
+  "passed": 1,
+  "total": 1,
+  "cases": [
+    {
+      "test": "recall-2048/2048",
+      "ok": true,
+      "detail": "misses=[] (0 total) single_inference=True elapsed=111s"
+    }
+  ],
+  "base_url": "http://127.0.0.1:8000/v1",
+  "model": "qwen38fn-fp4-qad",
+  "needles": 2048,
+  "ctx": 524288,
+  "needle_region_tokens": 349525,
+  "story": "auto",
+  "seed": 1234,
+  "turns": 1,
+  "single_inference": true,
+  "elapsed_s": 111.0
+}

@@ -1,0 +1,40 @@
+{
+  "suite": "multiturn",
+  "ok": false,
+  "passed": 5,
+  "total": 6,
+  "cases": [
+    {
+      "test": "C1-single-tool-offset",
+      "ok": true,
+      "detail": "tools=1 lm=2 ans='The temperature in Paris with the +5\u00b0C offset applied is **25.0\u00b0C**.'"
+    },
+    {
+      "test": "C2-context-persistence",
+      "ok": false,
+      "detail": "grades=ok,ok,BAD:want 14, got=\" right now. That's why I'm unable to look up the current hour in London.\\n\\nIf you'd like, I can check the weather i | [turn:Weather in T...]=\"Here's what I found for Tokyo:\\n\\n- **Weather:** 15.0\u00b0C\\n- **Current time:** 23:00 (11 PM)\" [turn:Now the weat...]='The weather in New York with the -3\u00b0C offset applied is **-5.0\u00b0C**.' [turn:Finally, wha...]=\"I don't have a `g"
+    },
+    {
+      "test": "C3-two-tool-compose",
+      "ok": true,
+      "detail": "tools=2 lm=2 nums=[-2.0, 8.0, -10.0] ans='New York: -2.0\u00b0C, London: 8.0\u00b0C\\n\\nDifference (New York \u2212 London): **-10\u00b0C**'"
+    },
+    {
+      "test": "C4-three-round-preserve-thinking",
+      "ok": true,
+      "detail": "preserve=True r1:ok(num=True,call=True,json=True,leak=True,tools=1,lm=2,think_recv=154,hist_think=0) r2:ok(num=True,call=True,json=True,leak=True,tools=1,lm=2,think_recv=158,hist_think=2) r3:ok(num=True,call=True,json=True,leak=True,tools=1,lm=2,think_recv=68,hist_think=4)"
+    },
+    {
+      "test": "C4b-thinking-echoed-r2-r3",
+      "ok": true,
+      "detail": "assistant msgs with reasoning_content at round start=[0, 2, 4] (need r2>=1, r3>=2)"
+    },
+    {
+      "test": "C4c-thinking-returned",
+      "ok": true,
+      "detail": "reasoning returned in 6 hop(s), len=[69, 85, 138, 20, 49, 19]"
+    }
+  ],
+  "base_url": "http://127.0.0.1:8000/v1",
+  "model": "qwen38fn-fp4-qad"
+}

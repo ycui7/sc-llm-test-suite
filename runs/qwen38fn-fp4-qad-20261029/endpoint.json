@@ -1,0 +1,25 @@
+{
+  "suite": "endpoint",
+  "ok": true,
+  "passed": 3,
+  "total": 3,
+  "cases": [
+    {
+      "test": "models-list",
+      "ok": true,
+      "detail": "1 models"
+    },
+    {
+      "test": "model-registered",
+      "ok": true,
+      "detail": "want 'qwen38fn-fp4-qad', have ['qwen38fn-fp4-qad']"
+    },
+    {
+      "test": "chat-pong",
+      "ok": true,
+      "detail": "reply: 'PONG'"
+    }
+  ],
+  "base_url": "http://127.0.0.1:8000/v1",
+  "model": "qwen38fn-fp4-qad"
+}

@@ -1,0 +1,48 @@
+{
+  "suite": "table-alignment",
+  "informational": true,
+  "note": "no pass/fail bar \u2014 the misaligned count is the result",
+  "model": "qwen38fn-fp4-qad",
+  "base_url": "http://127.0.0.1:8000/v1",
+  "requested_rows": 8,
+  "requested_columns": 6,
+  "rounds": [
+    {
+      "round": 0,
+      "finish": "stop",
+      "elapsed_s": 31.0,
+      "prompt_chars": 647,
+      "answer_chars": 1199,
+      "found": true,
+      "bar_lines": 12,
+      "rows": 9,
+      "columns": 6,
+      "misaligned_lines": 0,
+      "misaligned_rows": 0,
+      "misaligned_line_indices": [],
+      "reference_pattern": [
+        0,
+        10,
+        16,
+        28,
+        71,
+        84,
+        98
+      ],
+      "column_widths": [
+        10,
+        6,
+        12,
+        43,
+        13,
+        14
+      ],
+      "uniform_widths": false,
+      "duplicate_cells": 0
+    }
+  ],
+  "misaligned_lines_total": 0,
+  "misaligned_rows_total": 0,
+  "tables_found": 1,
+  "rounds_run": 1
+}

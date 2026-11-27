@@ -1,0 +1,8 @@
+iter 0: cpt=4.694 prompt_tokens=453509 target=500000
+iter 1: cpt=4.709 prompt_tokens=492780 target=500000
+haystack: 2288345 chars @ 4.71 c/t -> ~485920 tokens, 2048 needles @ depth 0.5 of ctx 1000000
+turn 1: +2048 new unique=2048/2048 (dup 2048) in=492780 out=50496 reas=None cached=492736 finish=stop 1036s [total 1036s]
+PASS  recall-2048/2048  | misses=[] (0 total) elapsed=1036s
+
+PASS  needles: 1/1
+saved: results/glm53-512k-needle-2048.json

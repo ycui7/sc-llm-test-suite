@@ -1,0 +1,20 @@
+story corpus: 5168 paragraphs, 2952141 chars (~590428 tokens est) from pride_and_prejudice.txt, sherlock_holmes.txt, great_expectations.txt, moby_dick.txt
+needle distribution: first=0.0008 last=1.0000 gap_mean=0.00049 gap_max=0.00579 gap_min=0.00002 (uniform expected gap=0.00049)
+iter 0: cpt=4.262 prompt_tokens=579884 target=512000
+needle distribution: first=0.0009 last=1.0000 gap_mean=0.00049 gap_max=0.00718 gap_min=0.00003 (uniform expected gap=0.00049)
+iter 1: cpt=4.259 prompt_tokens=491717 target=512000
+needle distribution: first=0.0009 last=1.0000 gap_mean=0.00049 gap_max=0.00719 gap_min=0.00003 (uniform expected gap=0.00049)
+iter 2: cpt=4.259 prompt_tokens=491244 target=512000
+needle distribution: first=0.0009 last=1.0000 gap_mean=0.00049 gap_max=0.00739 gap_min=0.00003 (uniform expected gap=0.00049)
+iter 3: cpt=4.259 prompt_tokens=491244 target=512000
+needle distribution: first=0.0009 last=1.0000 gap_mean=0.00049 gap_max=0.00739 gap_min=0.00003 (uniform expected gap=0.00049)
+iter 4: cpt=4.259 prompt_tokens=491244 target=512000
+needle distribution: first=0.0009 last=1.0000 gap_mean=0.00049 gap_max=0.00739 gap_min=0.00003 (uniform expected gap=0.00049)
+iter 5: cpt=4.259 prompt_tokens=491244 target=512000
+haystack: 2059695 chars @ 4.26 c/t -> ~483657 tokens, 2048 needles across needle region 512000 tokens (rule 3: min(2/3*ctx=666666, 512000)), story=auto
+rule 4: est_prompt=491244 output_budget=81920 (n*40=81920, room=508244)
+turn 1: +2048 new unique=2048/2048 (dup 1909) in=491244 out=0 reas=None cached=None finish=None 1034s [total 1034s]
+PASS  recall-2048/2048  | misses=[] (0 total) single_inference=True elapsed=1034s
+
+PASS  needles: 1/1
+saved: results/glm53-story-needle-2048.json

@@ -1,0 +1,17 @@
+{
+ "coldA": {
+  "ttft": 132.50527887186036,
+  "seed": 20261019,
+  "tokens": 200000,
+  "needles": 24
+ },
+ "coldB": {
+  "ttft": 107.55797654693015,
+  "seed": 777001,
+  "tokens": 160000,
+  "needles": 24
+ },
+ "warm": {
+  "error": "[Errno 2] No such file or directory: '~/workspace/sc-llm-test-suite/runs/ssd-gate-64mib/warm.json'"
+ }
+}

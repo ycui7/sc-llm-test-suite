@@ -1,0 +1,49 @@
+{
+  "suite": "speed",
+  "ok": true,
+  "passed": 3,
+  "total": 3,
+  "cases": [
+    {
+      "test": "tg-c1",
+      "ok": true,
+      "detail": "agg=162.2 t/s req=162.2 pp=8377.272177843774 ttfr=0.2611901163375781"
+    },
+    {
+      "test": "tg-c2",
+      "ok": true,
+      "detail": "agg=261.1 t/s req=134.8 pp=10837.540645387708 ttfr=0.3468318278343456"
+    },
+    {
+      "test": "tg-c4",
+      "ok": true,
+      "detail": "agg=501.8 t/s req=131.4 pp=10330.80413350545 ttfr=0.7153400720817444"
+    }
+  ],
+  "base_url": "http://127.0.0.1:8000/v1",
+  "model": "qwen38fn-fp4-qad",
+  "source": "llama-benchy",
+  "matrix": [
+    {
+      "concurrency": 1,
+      "pp_tps": 8377.272177843774,
+      "tg_tps_agg": 162.17752604992148,
+      "tg_tps_req": 162.17752604992148,
+      "ttfr_s": 0.2611901163375781
+    },
+    {
+      "concurrency": 2,
+      "pp_tps": 10837.540645387708,
+      "tg_tps_agg": 261.08656092704774,
+      "tg_tps_req": 134.76768038876946,
+      "ttfr_s": 0.3468318278343456
+    },
+    {
+      "concurrency": 4,
+      "pp_tps": 10330.80413350545,
+      "tg_tps_agg": 501.81557793685147,
+      "tg_tps_req": 131.41498272389967,
+      "ttfr_s": 0.7153400720817444
+    }
+  ]
+}

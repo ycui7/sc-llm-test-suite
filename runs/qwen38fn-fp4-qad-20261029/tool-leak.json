@@ -1,0 +1,25 @@
+{
+  "suite": "tool-leak",
+  "ok": true,
+  "passed": 3,
+  "total": 3,
+  "cases": [
+    {
+      "test": "plain-with-tools",
+      "ok": true,
+      "detail": "finish=stop content='\\n\\n144'"
+    },
+    {
+      "test": "tool-emitted",
+      "ok": true,
+      "detail": "name=get_weather args='{\"city\": \"Paris\"}'"
+    },
+    {
+      "test": "tool-result-consumed",
+      "ok": true,
+      "detail": "answer='The current temperature in Paris is **20\u00b0C**.'"
+    }
+  ],
+  "base_url": "http://127.0.0.1:8000/v1",
+  "model": "qwen38fn-fp4-qad"
+}
